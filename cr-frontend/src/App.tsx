@@ -2,42 +2,27 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 
 const App = () => {
-  const [message, setMessage] = useState("My message blah blah");
+  const [courses, setCourses] = useState<any[]>([]);
 
   useEffect(() => {
     fetch("http://localhost:3000/courses")
       .then((res) => res.json())
-      .then((obj) => {
-        setMessage(obj.message);
+      .then((courses) => {
+        setCourses(courses);
       });
   }, []);
 
-  return <div className="App">{message}</div>;
+  return (
+    <div className="App">
+      <ul>
+        {courses.map((item) => (
+          <li key={item.id}>
+            {item.number} - {item.title}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 };
-
-/*
-type AppState = {
-  message: string;
-};
-
-class App extends React.Component<{}, AppState> {
-  state: AppState = {
-    // optional second annotation for better type inference
-    message: "Default message",
-  };
-
-  componentDidMount() {
-    fetch("http://localhost:3000/courses")
-      .then((res) => res.json())
-      .then((obj) => {
-        this.setState({ message: obj.message });
-      });
-  }
-
-  render() {
-    return <div>{this.state.message}</div>;
-  }
-}
-*/
 
 export default App;
