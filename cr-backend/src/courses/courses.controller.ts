@@ -22,8 +22,8 @@ export class CoursesController {
   @Post()
   async create(@Body() createCourseDto: CreateCourseDto) {
     if (
-      createCourseDto.number != undefined &&
-      createCourseDto.title != undefined
+      createCourseDto.number !== undefined &&
+      createCourseDto.title !== undefined
     ) {
       const newCourse = this.coursesService.create(createCourseDto);
       return newCourse;
