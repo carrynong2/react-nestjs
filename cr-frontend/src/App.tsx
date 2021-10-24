@@ -11,12 +11,22 @@ const App = () => {
   const toggleFormVisible = () => {
     setFormVisible(!formVisible);
   };
-  useEffect(() => {
+
+  const fetchCourses = () => {
     fetch("http://localhost:3000/courses")
       .then((res) => res.json())
       .then((courses) => {
         setCourses(courses);
       });
+  };
+
+  const handleNewCourseCreated = (course: Course) => {
+    fetchCourses();
+    setFormVisible(false);
+  };
+
+  useEffect(() => {
+    fetchCourses();
   }, []);
 
   return (
@@ -27,7 +37,9 @@ const App = () => {
         ))}
       </ul>
       <button onClick={toggleFormVisible}>New course</button>
-      {formVisible && <NewCourseForm />}
+      {formVisible && (
+        <NewCourseForm onNewCourseCreated={handleNewCourseCreated} />
+      )}
     </div>
   );
 };
