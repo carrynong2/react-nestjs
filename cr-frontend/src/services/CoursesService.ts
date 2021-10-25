@@ -1,4 +1,4 @@
-import { Course } from "../interfaces";
+import { Course, Review } from "../interfaces";
 import { baseUrl } from "../config/const";
 
 async function fetchCourses(): Promise<Course[]> {
@@ -21,9 +21,16 @@ async function createCourse(newCourse: Course): Promise<Course | null> {
   }
 }
 
+async function fetchReviews(courseId: string): Promise<Review[]> {
+  const res = await fetch(`${baseUrl}/courses/${courseId}/reviews`);
+  const reviews = await res.json();
+  return reviews;
+}
+
 const logger = {
   fetchCourses,
   createCourse,
+  fetchReviews,
 };
 
 export default logger;

@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import Course from './courses/course.entity';
 import { CoursesModule } from './courses/courses.module';
+import Review from './courses/review.entity';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { CoursesModule } from './courses/courses.module';
       type: 'mongodb',
       host: 'localhost',
       database: 'test2',
-      entities: [Course],
+      entities: [Course, Review],
       synchronize: true,
     }),
 
