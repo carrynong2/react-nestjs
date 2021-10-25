@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ObjectID } from 'mongodb';
 import Course from './course.entity';
 import Review from './review.entity';
 import { CreateCourseDto } from './dto/create-course.dto';
+import { CreateReviewDto } from './dto/create-review.dto';
 
 @Injectable()
 export class CoursesService {
@@ -21,6 +23,12 @@ export class CoursesService {
   }
 
   async findAllReviews(courseId: string): Promise<Review[]> {
-    return this.reviewsRepository.find({ where: { courseId: courseId } });
+    return this.reviewsRepository.find({
+      where: { courseId: new ObjectID(courseId) },
+    });
+  }
+
+  async createReview(createReviewDto: CreateReviewDto) {
+    return this.reviewsRepository.save(createReviewDto);
   }
 }

@@ -1,10 +1,10 @@
 import { Entity, Column, ObjectIdColumn } from 'typeorm';
-import { ObjectId } from 'mongodb';
+import { ObjectID } from 'mongodb';
 
 @Entity()
 export class Review {
   @ObjectIdColumn()
-  id?: ObjectId;
+  id?: ObjectID;
 
   @Column()
   comments: string;
@@ -13,7 +13,7 @@ export class Review {
   score: number;
 
   @Column()
-  courseId: ObjectId;
+  courseId: ObjectID;
 }
 
 export default Review;

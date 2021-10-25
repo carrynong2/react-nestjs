@@ -7,10 +7,12 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import { CoursesService } from './courses.service';
-import { CreateCourseDto } from './dto/create-course.dto';
 import Course from './course.entity';
 import Review from './review.entity';
+import { ObjectID } from 'mongodb';
+import { CoursesService } from './courses.service';
+import { CreateCourseDto } from './dto/create-course.dto';
+import { CreateReviewDto } from './dto/create-review.dto';
 
 @Controller('courses')
 export class CoursesController {
@@ -37,5 +39,22 @@ export class CoursesController {
   @Get(':courseId/reviews')
   async findAllReviews(@Param('courseId') courseId: string): Promise<Review[]> {
     return this.coursesService.findAllReviews(courseId);
+  }
+
+  @Post(':courseId/reviews')
+  async createReview(
+    @Param('courseId') courseId: string,
+    @Body() createReviewDto: CreateReviewDto,
+  ) {
+    if (
+      createReviewDto.score !== undefined &&
+      createReviewDto.comments !== undefined
+    ) {
+      createReviewDto.courseId = new ObjectID(courseId);
+      const newReview = this.coursesService.createReview(createReviewDto);
+      return newReview;
+    } else {
+      throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+    }
   }
 }
