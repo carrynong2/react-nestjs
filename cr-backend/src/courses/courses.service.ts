@@ -22,9 +22,9 @@ export class CoursesService {
     return this.coursesRepository.save(createCourseDto);
   }
 
-  async findAllReviews(courseId: string): Promise<Review[]> {
+  async findAllReviews(courseId: ObjectID): Promise<Review[]> {
     return this.reviewsRepository.find({
-      where: { courseId: new ObjectID(courseId) },
+      where: { courseId: courseId },
     });
   }
 
