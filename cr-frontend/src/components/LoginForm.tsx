@@ -3,7 +3,11 @@ import { useHistory } from "react-router";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import AuthService from "../services/AuthService";
 
-const LoginForm = () => {
+type LoginFormProps = {
+  loginCallback?: () => void;
+};
+
+const LoginForm = (props: LoginFormProps) => {
   const [loginErrorMessage, setLoginErrorMessage] = useState("");
   const history = useHistory();
 
@@ -30,6 +34,9 @@ const LoginForm = () => {
             setLoginErrorMessage("Wrong username or password");
           } else {
             setLoginErrorMessage("");
+            if (props.loginCallback) {
+              props.loginCallback();
+            }
             history.push("/");
           }
           actions.setSubmitting(false);

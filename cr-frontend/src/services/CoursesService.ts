@@ -7,10 +7,16 @@ async function fetchCourses(): Promise<Course[]> {
   return courses;
 }
 
-async function createCourse(newCourse: Course): Promise<Course | null> {
+async function createCourse(
+  newCourse: Course,
+  accessToken: string
+): Promise<Course | null> {
   const res = await fetch(`${baseUrl}/courses`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
     body: JSON.stringify(newCourse),
   });
   const savedNewCourse = await res.json();

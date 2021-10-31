@@ -3,12 +3,20 @@ import CourseItem from "./CourseItem";
 import { Course } from "../interfaces";
 import NewCourseForm from ".//NewCourseForm";
 import CoursesService from "../services/CoursesService";
+import AuthService from "../services/AuthService";
+import { Redirect } from "react-router";
 
 const CourseReview = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [formVisible, setFormVisible] = useState<boolean>(false);
+  const [isUserLoginedIn, setIsUserLoggedIn] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsUserLoggedIn(AuthService.isUserLoggedIn());
+  }, []);
 
   const toggleFormVisible = () => {
+    setIsUserLoggedIn(AuthService.isUserLoggedIn());
     setFormVisible(!formVisible);
   };
 
@@ -35,9 +43,10 @@ const CourseReview = () => {
         ))}
       </ul>
       <button onClick={toggleFormVisible}>New course</button>
-      {formVisible && (
+      {formVisible && isUserLoginedIn && (
         <NewCourseForm onNewCourseCreated={handleNewCourseCreated} />
       )}
+      {formVisible && !isUserLoginedIn && <Redirect to="/login" />}
     </div>
   );
 };
