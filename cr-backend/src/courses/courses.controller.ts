@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import Course from './course.entity';
 import Review from './review.entity';
@@ -14,6 +15,7 @@ import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ParseObjectIdPipe } from '../common/pipes';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('courses')
 export class CoursesController {
@@ -24,6 +26,7 @@ export class CoursesController {
     return this.coursesService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createCourseDto: CreateCourseDto) {
     return this.coursesService.create(createCourseDto);
